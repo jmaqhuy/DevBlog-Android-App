@@ -54,5 +54,9 @@ dependencies {
     implementation(libs.converter.gson)
 
     implementation(libs.roundedimageview)
+    implementation (libs.lottie)
+
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
 
 }

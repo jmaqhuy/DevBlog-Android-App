@@ -6,16 +6,20 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
 
 import com.example.devblogandroidapp.BR;
 import com.example.devblogandroidapp.activity.LoginActivity;
+import com.example.devblogandroidapp.activity.SetupProfileActivity;
 import com.example.devblogandroidapp.api.ApiService;
 import com.example.devblogandroidapp.api.request.RegisterRequest;
 import com.example.devblogandroidapp.api.response.ApiResponse;
 import com.example.devblogandroidapp.api.response.RegisterResponse;
+import com.example.devblogandroidapp.model.User;
+import com.example.devblogandroidapp.repository.UserRepository;
 import com.example.devblogandroidapp.utils.Constants;
 import com.example.devblogandroidapp.utils.PreferenceManager;
 import com.google.gson.Gson;
@@ -35,10 +39,12 @@ public class RegisterViewModel extends BaseObservable {
     public ObservableField<String> errorMessage = new ObservableField<>();
     public ObservableField<Boolean> isShowErrorMessage = new ObservableField<>(false);
     public ObservableField<Boolean> inProgress = new ObservableField<>(false);
-    private Context context;
+    private final Context context;
+    private UserRepository userRepository;
 
     public RegisterViewModel(Context context) {
         this.context = context;
+        userRepository = new UserRepository(context);
     }
 
     @Bindable
@@ -106,22 +112,23 @@ public class RegisterViewModel extends BaseObservable {
         ApiService.apiService.register(request)
                 .enqueue(new Callback<ApiResponse<RegisterResponse>>() {
                     @Override
-                    public void onResponse(Call<ApiResponse<RegisterResponse>> call,
-                                           Response<ApiResponse<RegisterResponse>> response) {
+                    public void onResponse(@NonNull Call<ApiResponse<RegisterResponse>> call,
+                                           @NonNull Response<ApiResponse<RegisterResponse>> response) {
 
                         inProgress.set(false);
                         if (response.isSuccessful()) {
                             ApiResponse<RegisterResponse> apiResponse = response.body();
-                            Log.i(TAG, "Response: " + apiResponse);
-                            PreferenceManager preferenceManager = new PreferenceManager(context);
-                            preferenceManager.putString(Constants.TOKEN, apiResponse.getData().getToken());
-                            // TODO: Change to Update Profile Activity
-                            context.startActivity(new Intent(context, LoginActivity.class));
-                            Log.i(TAG, "Register success");
+                            if (apiResponse != null) {
+                                User user = apiResponse.getData();
+                                user.setCurrentUser(true);
+                                userRepository.saveUser(user);
+                                context.startActivity(new Intent(context, SetupProfileActivity.class));
+                                Log.i(TAG, "Register success");
+                            }
+
                         } else {
                             if (response.code() == 400) {
                                 try {
-                                    // Đọc và parse error body
                                     ApiResponse<RegisterResponse> errorResponse =
                                             ApiService.errorConverter.convert(response.errorBody());
                                     Log.e(TAG, "Bad Request: " + errorResponse);

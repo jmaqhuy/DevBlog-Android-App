@@ -1,15 +1,14 @@
 package com.example.devblogandroidapp.api.response;
 
-import lombok.Builder;
-import lombok.Data;
+import com.example.devblogandroidapp.model.User;
 
-@Data
-@Builder
-public class RegisterResponse {
-    private String token;
-    private String id;
-    private String email;
-    private String username;
-    private String name;
-    private String avatarPath;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class RegisterResponse extends User {
+    public RegisterResponse(String token, String id, String email, String username, String name, String avatarPath, boolean currentUser) {
+        super(token, id, email, username, name, avatarPath, currentUser);
+    }
 }

@@ -36,7 +36,8 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 app:riv_corner_radius="20dp"
-                android:src="@drawable/img"/>
+                android:src="@{setupProfileViewModel.profileImage}"
+                android:onClick="@{() -> setupProfileViewModel.onPickImage()}"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -55,9 +56,9 @@
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="12dp"
                 android:hint="Enter your email"
+                android:text="@={setupProfileViewModel.email}"
                 android:padding="10dp"
                 android:textSize="14sp"
-                android:text="@={}"
                 android:inputType="textEmailAddress"/>
 
             <TextView
@@ -77,9 +78,9 @@
                 android:drawableStart="@drawable/ic_person_outline"
                 android:drawablePadding="12dp"
                 android:hint="Enter your name"
+                android:text="@={setupProfileViewModel.name}"
                 android:padding="10dp"
                 android:textSize="14sp"
-                android:text="@={}"
                 android:inputType="text"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -98,9 +99,9 @@
                 android:drawableStart="@drawable/ic_at"
                 android:drawablePadding="12dp"
                 android:hint="Enter your username"
+                android:text="@={setupProfileViewModel.username}"
                 android:padding="10dp"
                 android:textSize="14sp"
-                android:text="@={}"
                 android:inputType="text"/>
 
             <TextView
@@ -145,7 +146,6 @@
                     android:layout_height="45dp"
                     android:text='Sign Up'
                     android:textAllCaps="true"
-                    android:onClick="@{}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"/>
                 <ProgressBar
@@ -158,9 +158,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     android:indeterminateTint="@color/white"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
