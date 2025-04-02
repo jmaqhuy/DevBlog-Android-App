@@ -32,12 +32,43 @@
                 android:textSize="22sp"
                 android:layout_marginBottom="20dp"/>
 
-            <com.makeramen.roundedimageview.RoundedImageView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="120dp"
-                android:layout_height="120dp"
-                app:riv_corner_radius="20dp"
-                android:src="@{setupProfileViewModel.profileImage}"
-                android:onClick="@{() -> setupProfileViewModel.onPickImage()}"/>
+                android:layout_height="120dp">
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:riv_corner_radius="20dp"
+                    android:src="@drawable/sample_avatar"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+                <com.makeramen.roundedimageview.RoundedImageView
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    app:riv_corner_radius="20dp"
+                    android:src="@{setupProfileViewModel.profileImage}"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:scaleType="centerCrop"/>
+
+                <ImageButton
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:contentDescription="Update Avatar"
+                    android:src="@drawable/ic_edit"
+                    android:background="@drawable/button_bg"
+                    android:backgroundTint="@color/white"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> setupProfileViewModel.onPickImage()}"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
             <TextView
                 android:layout_width="wrap_content"
